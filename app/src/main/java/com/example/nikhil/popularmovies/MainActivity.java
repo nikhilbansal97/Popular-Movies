@@ -38,15 +38,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        movies = new ArrayList<>();
+
         // Bind Views
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        adapter = new MovieAdapter(this,null);
+        adapter = new MovieAdapter(this,movies);
         recyclerView.setAdapter(adapter);
-
-        movies = new ArrayList<>();
 
         // Retrofit Call
         getMovies(SORT_POPULARITY);
@@ -67,8 +67,9 @@ public class MainActivity extends AppCompatActivity {
                     if(movies.get(i).getPoster_path() == null || movies.get(i).getPoster_path().contains("null"))
                         movies.remove(i);
                 }
-                adapter = new MovieAdapter(getApplicationContext(),movies);
-                recyclerView.setAdapter(adapter);
+                //adapter = new MovieAdapter(getApplicationContext(),movies);
+                //recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
                 for(int i=0;i<movies.size();i++)
                     Log.v(TAG , "https://image.tmdb.org/t/p/w500"+movies.get(i).getPoster_path());
             }
